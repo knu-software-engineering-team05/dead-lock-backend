@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   HASH_ROUNDS,
@@ -11,6 +15,12 @@ import * as bcrypt from 'bcrypt';
 import { SignUpRequestDto } from './dto/sign-up-request.dto';
 import { SignInRequestDto } from './dto/sign-in-request.dto';
 import { TokenResponseDto } from './dto/token-response.dto';
+
+export interface ITokenPayload {
+  userPk: number;
+  userId: string;
+  type: TokenType;
+}
 
 @Injectable()
 export class AuthService {
@@ -43,6 +53,26 @@ export class AuthService {
     );
   }
 
+  private async verifyToken(token: string): Promise<ITokenPayload> {
+    try {
+      return this.jwtService.verify(token, {
+        secret: JWT_SECRET,
+      });
+    } catch (err) {
+      throw new BadRequestException('ACCESS 토큰이 만료되었습니다');
+    }
+  }
+
+  public async extractToken(headerAuthField: string) {
+    try {
+      const splittedToken = headerAuthField.split(' ');
+      if (splittedToken.length !== 2) throw new Error();
+      return splittedToken[1];
+    } catch (err) {
+      throw new UnauthorizedException('토큰이 없거나 잘못된 형식의 토큰입니다');
+    }
+  }
+
   private async authenticateUser(userId: string, userPw: string) {
     const user = await this.usersService.readUserByUserId(userId);
     const isPwCorrect = await bcrypt.compare(userPw, user.userPw);
@@ -70,5 +100,20 @@ export class AuthService {
       signInDto.userPw,
     );
     return this.getToken(user.userPk, user.userId);
+  }
+
+  public async reissueToken(refreshToken: string) {
+    const decodedToken = await this.verifyToken(refreshToken);
+
+    if (decodedToken.type !== TokenType.REFRESH) {
+      throw new BadRequestException(
+        'Access Token 재발급은 Refresh Token 으로만 가능합니다',
+      );
+    }
+    return this.signToken(
+      decodedToken.userPk,
+      decodedToken.userId,
+      TokenType.ACCESS,
+    );
   }
 }

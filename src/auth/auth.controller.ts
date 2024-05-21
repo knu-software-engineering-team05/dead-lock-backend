@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Headers, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInRequestDto } from './dto/sign-in-request.dto';
 import { SignUpRequestDto } from './dto/sign-up-request.dto';
@@ -20,5 +20,13 @@ export class AuthController {
   @SignUpDocs()
   public async signUp(@Body() signUpRequestDto: SignUpRequestDto) {
     return this.authService.signUp(signUpRequestDto);
+  }
+
+  @Post('reissue')
+  public async reissueToken(@Headers('authorization') headerAuthField: string) {
+    const refreshToken = await this.authService.extractToken(headerAuthField);
+    const newAccessToken = await this.authService.reissueToken(refreshToken);
+
+    return { access: newAccessToken };
   }
 }
