@@ -1,0 +1,11 @@
+services:
+  dead-lock-db:
+    image: postgres:15
+    restart: always
+
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: deadlock
+      POSTGRES_PASSWORD: deadlock
+      POSTGRES_DB: deadlock
