@@ -44,3 +44,20 @@ export const SignInDocs = () => {
     }),
   );
 };
+
+export const ReissueDocs = () => {
+  return applyDecorators(
+    ApiOperation({
+      summary: 'access 토큰 재발급',
+      description: 'access 토큰을 재발급합니다',
+    }),
+    ApiCreatedResponse({
+      description: 'OK',
+      type: TokenResponseDto,
+    }),
+    ApiBadRequestResponse({
+      description: 'access 토큰 재발급은 refresh 토큰으로만 가능합니다',
+      type: BadRequestException,
+    }),
+  );
+};

@@ -4,6 +4,7 @@ import { SignInRequestDto } from './dto/sign-in-request.dto';
 import { SignUpRequestDto } from './dto/sign-up-request.dto';
 import { SignInDocs, SignUpDocs } from 'src/docs/auth.docs';
 import { ApiTags } from '@nestjs/swagger';
+import { TokenResponseDto } from './dto/token-response.dto';
 
 @ApiTags('인증/인가')
 @Controller('auth')
@@ -27,6 +28,6 @@ export class AuthController {
     const refreshToken = await this.authService.extractToken(headerAuthField);
     const newAccessToken = await this.authService.reissueToken(refreshToken);
 
-    return { access: newAccessToken };
+    return new TokenResponseDto(newAccessToken, refreshToken);
   }
 }
