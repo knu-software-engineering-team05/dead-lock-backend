@@ -8,8 +8,9 @@ import {
 } from 'src/config/jwt.config';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
-import { SignUpDto } from './dto/sign-up.dto';
-import { SignInDto } from './dto/sign-in.dto';
+import { SignUpRequestDto } from './dto/sign-up-request.dto';
+import { SignInRequestDto } from './dto/sign-in-request.dto';
+import { TokenResponseDto } from './dto/token-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,10 +37,10 @@ export class AuthService {
   }
 
   private async getToken(userPk: number, userId: string) {
-    return {
-      access: await this.signToken(userPk, userId, TokenType.ACCESS),
-      refresh: await this.signToken(userPk, userId, TokenType.REFRESH),
-    };
+    return new TokenResponseDto(
+      await this.signToken(userPk, userId, TokenType.ACCESS),
+      await this.signToken(userPk, userId, TokenType.REFRESH),
+    );
   }
 
   private async authenticateUser(userId: string, userPw: string) {
@@ -52,7 +53,7 @@ export class AuthService {
     return user;
   }
 
-  public async signUp(signUpDto: SignUpDto) {
+  public async signUp(signUpDto: SignUpRequestDto) {
     const hashedPw = await bcrypt.hash(signUpDto.userPw, HASH_ROUNDS);
 
     const newUser = await this.usersService.createUser({
@@ -63,7 +64,7 @@ export class AuthService {
     return this.getToken(newUser.userPk, newUser.userId);
   }
 
-  public async signIn(signInDto: SignInDto) {
+  public async signIn(signInDto: SignInRequestDto) {
     const user = await this.authenticateUser(
       signInDto.userId,
       signInDto.userPw,
