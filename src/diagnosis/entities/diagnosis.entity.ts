@@ -21,6 +21,13 @@ export enum ResidenceType {
   RURAL = 'RURAL',
 }
 
+export enum SmokeType {
+  FORMERLY = 'FORMERLY',
+  NEVER = 'NEVER',
+  SMOKES = 'SMOKES',
+  UNKNOWN = 'UNKNOWN',
+}
+
 @Entity()
 export class DiagnosisModel {
   @PrimaryGeneratedColumn()

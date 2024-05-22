@@ -26,5 +26,9 @@ export class DiagnosisController {
   @Post()
   public async createDiagnosisReport(
     @Body() createDiagnosisReportRequestDto: CreateDiagnosisRequestDto,
-  ) {}
+  ) {
+    return this.diagnosisService.createDiagnosisReport(
+      createDiagnosisReportRequestDto,
+    );
+  }
 }
