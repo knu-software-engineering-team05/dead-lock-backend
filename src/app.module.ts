@@ -5,9 +5,10 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmRootModule } from './config/db.config';
 import { RootConfigModule } from './config/root.config';
+import { DiagnosisModule } from './diagnosis/diagnosis.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, TypeOrmRootModule, RootConfigModule],
+  imports: [AuthModule, UsersModule, TypeOrmRootModule, RootConfigModule, DiagnosisModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { DiagnosisModel } from 'src/diagnosis/entities/diagnosis.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum Gender {
   MALE = 'MALE',
@@ -20,6 +20,9 @@ export class UserModel {
   @Column()
   age: number;
 
-  @Column({ type: 'enum', enum: Gender })
+  @Column({ enum: Gender })
   gender: Gender;
+
+  @OneToMany(() => DiagnosisModel, (diagnosis) => diagnosis.user)
+  diagnosis: DiagnosisModel[];
 }
