@@ -4,7 +4,7 @@ import { UserModel } from 'src/users/entities/user.entity';
 
 const RootEntities = [UserModel];
 
-export const TypeOrmRootModule = TypeOrmModule.forRootAsync({
+export const TypeOrmRootModule_Production = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
   useFactory: (configService: ConfigService) => ({
     type: 'postgres',
@@ -16,4 +16,11 @@ export const TypeOrmRootModule = TypeOrmModule.forRootAsync({
     synchronize: true,
   }),
   inject: [ConfigService],
+});
+
+export const TypeOrmRootModule_Develop = TypeOrmModule.forRoot({
+  type: 'sqlite',
+  database: 'database.db',
+  entities: RootEntities,
+  synchronize: true,
 });

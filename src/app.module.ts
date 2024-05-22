@@ -3,11 +3,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { TypeOrmRootModule } from './config/db.config';
+import {
+  TypeOrmRootModule_Develop,
+  TypeOrmRootModule_Production,
+} from './config/db.config';
 import { RootConfigModule } from './config/root.config';
 
 @Module({
-  imports: [AuthModule, UsersModule, TypeOrmRootModule, RootConfigModule],
+  imports: [
+    AuthModule,
+    UsersModule,
+    process.env.NODE_ENV === 'dev'
+      ? TypeOrmRootModule_Develop
+      : TypeOrmRootModule_Production,
+    RootConfigModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
