@@ -42,16 +42,20 @@ export class DiagnosisModel {
 
   @Column()
   @IsInt()
-  probability: number;
+  stroke_probability: number;
 
   @Column()
   @IsString()
-  result: string;
+  total_diagnosis: string;
 
   @Column()
   @IsString()
-  improvements: string;
+  eating_habits: string;
 
-  @ManyToOne(() => UserModel, (user) => user.diagnosis)
-  user: UserModel;
+  @Column()
+  @IsString()
+  lifestyle_habits: string;
+
+  // @ManyToOne(() => UserModel, (user) => user.diagnosis)
+  // user: UserModel;
 }

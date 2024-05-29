@@ -18,11 +18,11 @@ export class UserModel {
   userPw: string;
 
   @Column()
-  age: number;
+  birth: string;
 
   @Column({ enum: Gender })
   gender: Gender;
 
-  @OneToMany(() => DiagnosisModel, (diagnosis) => diagnosis.user)
-  diagnosis: DiagnosisModel[];
+  // @OneToMany(() => DiagnosisModel, (diagnosis) => diagnosis.user)
+  // diagnosis: DiagnosisModel[];
 }

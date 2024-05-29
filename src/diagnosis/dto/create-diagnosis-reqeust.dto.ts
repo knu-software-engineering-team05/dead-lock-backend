@@ -1,4 +1,4 @@
-import { IsBoolean, IsEnum, IsInt } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsNumber } from 'class-validator';
 import {
   JobType,
   ResidenceType,
@@ -26,10 +26,10 @@ export class CreateDiagnosisRequestDto {
   @IsBoolean({ message: 'heartDisease 는 boolean 값이어야 합니다' })
   heartDisease: boolean;
 
-  @IsInt({ message: 'bloodSugarLevel 는 number 값이어야 합니다' })
+  @IsNumber()
   bloodSugarLevel: number;
 
-  @IsInt({ message: 'bmi 는 number 값이어야 합니다' })
+  @IsNumber()
   bmi: number;
 
   @IsEnum(SmokeType, {

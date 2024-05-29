@@ -14,6 +14,7 @@ import { DiagnosisModule } from './diagnosis/diagnosis.module';
   imports: [
     AuthModule,
     UsersModule,
+    DiagnosisModule,
     process.env.NODE_ENV === 'dev'
       ? TypeOrmRootModule_Develop
       : TypeOrmRootModule_Production,
