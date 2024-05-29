@@ -37,7 +37,7 @@ export class AuthService {
     const payload = {
       id: userPk,
       userId,
-      type: TokenType,
+      type: tokenType,
     };
 
     return this.jwtService.sign(payload, {
@@ -53,7 +53,7 @@ export class AuthService {
     );
   }
 
-  private async verifyToken(token: string): Promise<ITokenPayload> {
+  public async verifyToken(token: string): Promise<ITokenPayload> {
     try {
       return this.jwtService.verify(token, {
         secret: JWT_SECRET,

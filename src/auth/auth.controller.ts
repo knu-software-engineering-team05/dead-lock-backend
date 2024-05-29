@@ -1,10 +1,11 @@
-import { Body, Controller, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Headers, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInRequestDto } from './dto/sign-in-request.dto';
 import { SignUpRequestDto } from './dto/sign-up-request.dto';
 import { SignInDocs, SignUpDocs } from 'src/docs/auth.docs';
 import { ApiTags } from '@nestjs/swagger';
 import { TokenResponseDto } from './dto/token-response.dto';
+import { RefreshTokenGuard } from './utils/refresh-token.guard';
 
 @ApiTags('인증/인가')
 @Controller('auth')
@@ -24,6 +25,7 @@ export class AuthController {
   }
 
   @Post('reissue')
+  @UseGuards(RefreshTokenGuard)
   public async reissueToken(@Headers('authorization') headerAuthField: string) {
     const refreshToken = await this.authService.extractToken(headerAuthField);
     const newAccessToken = await this.authService.reissueToken(refreshToken);
