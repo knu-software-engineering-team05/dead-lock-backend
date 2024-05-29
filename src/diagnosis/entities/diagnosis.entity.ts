@@ -56,6 +56,6 @@ export class DiagnosisModel {
   @IsString()
   lifestyle_habits: string;
 
-  // @ManyToOne(() => UserModel, (user) => user.diagnosis)
-  // user: UserModel;
+  @ManyToOne(() => UserModel, (user) => user.diagnosis)
+  user: UserModel;
 }

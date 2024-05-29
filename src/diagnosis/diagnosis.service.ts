@@ -5,6 +5,7 @@ import { DiagnosisModel } from './entities/diagnosis.entity';
 import { CreateDiagnosisRequestDto } from './dto/create-diagnosis-reqeust.dto';
 
 import OpenAI from 'openai';
+import { UserModel } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class DiagnosisService {
@@ -13,12 +14,14 @@ export class DiagnosisService {
     private readonly diagnosisRepository: Repository<DiagnosisModel>,
   ) {}
 
-  public async readDiagnosisReports() {
-    return this.diagnosisRepository.find();
+  public async readDiagnosisReports(user: UserModel) {
+    return this.diagnosisRepository.find({ where: { user } });
   }
 
-  public async readDiagnosisReportById(id: number) {
-    const diagnosis = await this.diagnosisRepository.findOne({ where: { id } });
+  public async readDiagnosisReportById(id: number, user: UserModel) {
+    const diagnosis = await this.diagnosisRepository.findOne({
+      where: { id, user },
+    });
     if (!diagnosis)
       throw new NotFoundException(
         `${id} 에 해당하는 진단결과가 존재하지 않습니다`,
@@ -27,6 +30,7 @@ export class DiagnosisService {
   }
 
   public async createDiagnosisReport(
+    user: UserModel,
     createDiagnosisReportRequestDto: CreateDiagnosisRequestDto,
   ) {
     const response = await fetch('http://127.0.0.1:5000/predict', {
@@ -67,17 +71,14 @@ export class DiagnosisService {
       stroke_probability: parseFloat(result.stroke_probability.slice(0, -2)),
     };
 
-    console.log(data);
-
     const newDiagnosis = await this.diagnosisRepository.create({
       score: 100 - data.stroke_probability,
       stroke_probability: data.stroke_probability,
       total_diagnosis: data.total_diagnosis,
       eating_habits: data.eating_habits,
       lifestyle_habits: data.lifestyle_habits,
+      user: user,
     });
-
-    console.log(newDiagnosis);
 
     return this.diagnosisRepository.save(newDiagnosis);
   }
