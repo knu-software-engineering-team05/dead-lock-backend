@@ -14,7 +14,7 @@ export class UserModel {
   @Column({ unique: true })
   userId: string;
 
-  @Column()
+  @Column({ select: false })
   userPw: string;
 
   @Column()
@@ -23,6 +23,6 @@ export class UserModel {
   @Column({ enum: Gender })
   gender: Gender;
 
-  // @OneToMany(() => DiagnosisModel, (diagnosis) => diagnosis.user)
-  // diagnosis: DiagnosisModel[];
+  @OneToMany(() => DiagnosisModel, (diagnosis) => diagnosis.user)
+  diagnosis: DiagnosisModel[];
 }
