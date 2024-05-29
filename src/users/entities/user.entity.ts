@@ -1,4 +1,4 @@
-// import { DiagnosisModel } from 'src/diagnosis/entities/diagnosis.entity';
+import { DiagnosisModel } from 'src/diagnosis/entities/diagnosis.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum Gender {
@@ -14,15 +14,15 @@ export class UserModel {
   @Column({ unique: true })
   userId: string;
 
-  @Column()
+  @Column({ select: false })
   userPw: string;
 
   @Column()
-  age: number;
+  birth: string;
 
   @Column({ enum: Gender })
   gender: Gender;
 
-  // @OneToMany(() => DiagnosisModel, (diagnosis) => diagnosis.user)
-  // diagnosis: DiagnosisModel[];
+  @OneToMany(() => DiagnosisModel, (diagnosis) => diagnosis.user)
+  diagnosis: DiagnosisModel[];
 }

@@ -19,6 +19,7 @@ export class UsersService {
   public async readUserByUserId(userId: string) {
     const user = await this.usersRepository.findOne({
       where: { userId },
+      select: { userPw: true },
     });
     if (!user)
       throw new NotFoundException('해당 userId 를 가진 사용자가 없습니다!');
