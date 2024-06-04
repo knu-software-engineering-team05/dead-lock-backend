@@ -1,11 +1,24 @@
 services:
-  dead-lock-db:
-    image: postgres:15
-    restart: always
-
+  deadlock-ai-server:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
     ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_USER: deadlock
-      POSTGRES_PASSWORD: deadlock
-      POSTGRES_DB: deadlock
+      - '5001:5000'
+    networks:
+      - deadlock
+
+  deadlock-nestjs-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - deadlock-ai-server
+    networks:
+      - deadlock
+
+networks:
+  deadlock:
+    driver: bridge
