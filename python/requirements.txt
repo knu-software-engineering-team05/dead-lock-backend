@@ -1,0 +1,7 @@
+Flask
+flask-expects-json
+flask-cors
+numpy
+pandas
+scikit-learn
+joblib
