@@ -23,8 +23,12 @@ export class DiagnosisReportResponseDto {
   lifestyle_habits: string;
 
   constructor(diagnosisReport) {
-    Object.keys(diagnosisReport).forEach((key) => {
-      this[key] = diagnosisReport[key];
-    });
+    this.id = diagnosisReport.id;
+    this.createdAt = diagnosisReport.createdAt;
+    this.score = diagnosisReport.score;
+    this.stroke_probability = diagnosisReport.stroke_probability;
+    this.total_diagnosis = diagnosisReport.total_diagnosis;
+    this.eating_habits = diagnosisReport.eating_habits;
+    this.lifestyle_habits = diagnosisReport.lifestyle_habits;
   }
 }

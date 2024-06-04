@@ -57,9 +57,9 @@ export class DiagnosisService {
       user: user,
     });
 
-    return new DiagnosisReportResponseDto(
-      this.diagnosisRepository.save(newDiagnosis),
-    );
+    const diagnosisReport = await this.diagnosisRepository.save(newDiagnosis);
+
+    return new DiagnosisReportResponseDto(diagnosisReport);
   }
 
   public async deleteDiagnosisReport(id: number, user: UserModel) {
@@ -77,7 +77,7 @@ export class DiagnosisService {
     user: UserModel,
     createDiagnosisReportRequestDto: CreateDiagnosisRequestDto,
   ) {
-    const response = await fetch("http://127.0.0.1:5000/predict", {
+    const response = await fetch('http://127.0.0.1:5000/predict', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
