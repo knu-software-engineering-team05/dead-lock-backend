@@ -1,24 +1,24 @@
 services:
-  deadlock-ai-server:
-    build:
-      context: ./python
-      dockerfile: Dockerfile
-    ports:
-      - '5001:5000'
-    networks:
-      - deadlock
+    deadlock-ai-server:
+        build:
+            context: ./python
+            dockerfile: Dockerfile
+        ports:
+            - "5001:5000"
+        networks:
+            - deadlock
 
-  deadlock-nestjs-server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - '8080:8080'
-    depends_on:
-      - deadlock-ai-server
-    networks:
-      - deadlock
+    deadlock-nestjs-server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        ports:
+            - "8080:8080"
+        depends_on:
+            - deadlock-ai-server
+        networks:
+            - deadlock
 
 networks:
-  deadlock:
-    driver: bridge
+    deadlock:
+        driver: bridge
