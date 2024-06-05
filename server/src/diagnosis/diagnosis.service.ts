@@ -40,24 +40,21 @@ export class DiagnosisService {
       createDiagnosisReportRequestDto,
     );
 
-    const report = {
-      ...(await this.createImprovementReport(
-        predictedStrokeProbability,
-        createDiagnosisReportRequestDto,
-      )),
-      stroke_probability: predictedStrokeProbability,
+    const improvementReport = await this.createImprovementReport(
+      predictedStrokeProbability,
+      createDiagnosisReportRequestDto,
+    );
+
+    const newReport = {
+      score: 100 - predictedStrokeProbability,
+      strokeProbability: predictedStrokeProbability,
+      totalDiagnosis: improvementReport.total_diagnosis,
+      eatingHabits: improvementReport.eating_habits,
+      lifestyleHabits: improvementReport.lifestyle_habits,
+      user: user,
     };
 
-    const newDiagnosis = await this.diagnosisRepository.create({
-      score: 100 - report.stroke_probability,
-      stroke_probability: report.stroke_probability,
-      total_diagnosis: report.total_diagnosis,
-      eating_habits: report.eating_habits,
-      lifestyle_habits: report.lifestyle_habits,
-      user: user,
-    });
-
-    const diagnosisReport = await this.diagnosisRepository.save(newDiagnosis);
+    const diagnosisReport = await this.diagnosisRepository.save(newReport);
 
     return new DiagnosisReportResponseDto(diagnosisReport);
   }
@@ -77,7 +74,7 @@ export class DiagnosisService {
     user: UserModel,
     createDiagnosisReportRequestDto: CreateDiagnosisRequestDto,
   ) {
-    const response = await fetch('http://deadlock-ai-server:5000/predict', {
+    const response = await fetch('http://127.0.0.1:5000/predict', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

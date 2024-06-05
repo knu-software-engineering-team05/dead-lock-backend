@@ -26,9 +26,9 @@ export class DiagnosisReportResponseDto {
     this.id = diagnosisReport.id;
     this.createdAt = diagnosisReport.createdAt;
     this.score = diagnosisReport.score;
-    this.strokeProbability = diagnosisReport.stroke_probability;
-    this.totalDiagnosis = diagnosisReport.total_diagnosis;
-    this.eatingHabits = diagnosisReport.eating_habits;
-    this.lifestyleHabits = diagnosisReport.lifestyle_habits;
+    this.strokeProbability = diagnosisReport.strokeProbability;
+    this.totalDiagnosis = diagnosisReport.totalDiagnosis;
+    this.eatingHabits = diagnosisReport.eatingHabits;
+    this.lifestyleHabits = diagnosisReport.lifestyleHabits;
   }
 }

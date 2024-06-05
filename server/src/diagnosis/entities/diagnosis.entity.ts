@@ -42,19 +42,19 @@ export class DiagnosisModel {
 
   @Column()
   @IsInt()
-  stroke_probability: number;
+  strokeProbability: number;
 
   @Column()
   @IsString()
-  total_diagnosis: string;
+  totalDiagnosis: string;
 
   @Column()
   @IsString()
-  eating_habits: string;
+  eatingHabits: string;
 
   @Column()
   @IsString()
-  lifestyle_habits: string;
+  lifestyleHabits: string;
 
   @ManyToOne(() => UserModel, (user) => user.diagnosis)
   user: UserModel;
