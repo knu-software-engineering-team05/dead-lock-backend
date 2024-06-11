@@ -4,16 +4,17 @@ import { Repository } from 'typeorm';
 import { DiagnosisModel } from './entities/diagnosis.entity';
 import { CreateDiagnosisRequestDto } from './dto/create-diagnosis-reqeust.dto';
 
-import OpenAI from 'openai';
 import { UserModel } from 'src/users/entities/user.entity';
 import { calculateAge } from './utils/calculateAge';
 import { DiagnosisReportResponseDto } from './dto/diagnosis-response.dto';
+import { OpenaiService } from 'src/openai/openai.service';
 
 @Injectable()
 export class DiagnosisService {
   constructor(
     @InjectRepository(DiagnosisModel)
     private readonly diagnosisRepository: Repository<DiagnosisModel>,
+    private readonly openAIService: OpenaiService,
   ) {}
 
   public async readDiagnosisReports(user: UserModel) {
@@ -92,29 +93,9 @@ export class DiagnosisService {
     predictedStrokeProbability: number,
     createDiagnosisReportRequestDto: CreateDiagnosisRequestDto,
   ) {
-    const openai = new OpenAI({
-      apiKey: process.env.OPEN_AI_API_KEY,
-      organization: process.env.OPEN_AI_ORG_KEY,
-      project: process.env.OPEN_AI_PROJ_KEY,
-    });
-
-    const completion = await openai.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content: `
-          ${createDiagnosisReportRequestDto}
-          ${predictedStrokeProbability}
-          여기 뇌졸중 관련 데이터와 예측된 뇌졸중 발병확률을 줄게
-          이 데이터들을 사용해 종합 건강 진단 결과, 식습관 개선방안, 생활습관 개선방안을
-          total_diagnosis, eating_habits, lifestyle_habits 프로퍼티값을 갖는 Json 으로 만들어줘
-          각각 200자 이상으로 채워줘
-      `,
-        },
-      ],
-      model: 'gpt-3.5-turbo-16k',
-    });
-
-    return JSON.parse(completion.choices[0].message.content);
+    return this.openAIService.createImprovementReport(
+      predictedStrokeProbability,
+      createDiagnosisReportRequestDto,
+    );
   }
 }

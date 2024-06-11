@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmRootModule } from './config/db.config';
 import { RootConfigModule } from './config/root.config';
 import { DiagnosisModule } from './diagnosis/diagnosis.module';
+import { OpenaiModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DiagnosisModule } from './diagnosis/diagnosis.module';
     DiagnosisModule,
     TypeOrmRootModule,
     RootConfigModule,
+    OpenaiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
