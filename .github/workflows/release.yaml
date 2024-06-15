@@ -19,6 +19,7 @@ jobs:
 
             - name: Create Production Env Variables
               run: |
+                  cd ./server
                   echo "${{secrets.PRODUCTION_ENV}}" > "./prod.env";
 
             - name: Dockerhub Login
@@ -29,7 +30,6 @@ jobs:
 
             - name: Build Docker Image and Push Dockerhub
               run: |
-                  cd ./server
                   docker buildx create --use
                   docker buildx build --platform linux/amd64 -t ${{secrets.DOCKER_USER}}/${{env.SERVER_IMAGE_NAME}}:latest --push .
 
