@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM --platform=amd64 python:3.9
 
 WORKDIR /deadlock/app
 

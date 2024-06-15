@@ -1,4 +1,4 @@
-FROM node:21
+FROM --platform=amd64 node:21
 
 WORKDIR /deadlock/app
 
