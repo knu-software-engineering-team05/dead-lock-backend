@@ -1,0 +1,20 @@
+services:
+    deadlock-ai-server:
+        image: toothlessdev/dead-lock-ai-server:latest
+        ports:
+            - "5001:5000"
+        networks:
+            - deadlock
+
+    deadlock-nestjs-server:
+        image: toothlessdev/dead-lock-nestjs-server:latest
+        ports:
+            - "8080:8080"
+        depends_on:
+            - deadlock-ai-server
+        networks:
+            - deadlock
+
+networks:
+    deadlock:
+        driver: bridge
