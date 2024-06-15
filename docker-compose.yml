@@ -1,17 +1,13 @@
 services:
     deadlock-ai-server:
-        build:
-            context: ./python
-            dockerfile: Dockerfile
+        image: toothlessdev/dead-lock-ai-server:latest
         ports:
             - "5001:5000"
         networks:
             - deadlock
 
     deadlock-nestjs-server:
-        build:
-            context: ./server
-            dockerfile: Dockerfile
+        image: toothlessdev/dead-lock-nestjs-server:latest
         ports:
             - "8080:8080"
         depends_on:
