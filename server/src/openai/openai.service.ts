@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDiagnosisRequestDto } from 'src/diagnosis/dto/create-diagnosis-reqeust.dto';
 import OpenAI from 'openai';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OpenaiService {
   private openAI: OpenAI;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     this.openAI = new OpenAI({
-      apiKey: process.env.OPEN_AI_API_KEY,
-      organization: process.env.OPEN_AI_ORG_KEY,
-      project: process.env.OPEN_AI_PROJ_KEY,
+      apiKey: this.configService.get<string>('OPEN_AI_API_KEY'),
+      organization: this.configService.get<string>('OPEN_AI_ORG_KEY'),
+      project: this.configService.get<string>('OPEN_AI_PROJ_KEY'),
     });
   }
 
