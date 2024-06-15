@@ -2,6 +2,8 @@
 
 소프트웨어 공학 뇌졸중 예측 서비스 DeadLock 백엔드 Repository 입니다
 
+[![.github/workflows/release.yaml](https://github.com/knu-software-engineering-team05/dead-lock-backend/actions/workflows/release.yaml/badge.svg?branch=main)](https://github.com/knu-software-engineering-team05/dead-lock-backend/actions/workflows/release.yaml)
+
 ### ✏️ API 명세서
 
 http://api.deadlock.kro.kr:8080/docs
